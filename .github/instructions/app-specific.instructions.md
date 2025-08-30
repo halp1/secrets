@@ -9,5 +9,4 @@ description: "This document contains instructions that must be followed for this
 
 ## Design style
 
-* This app will only have two colors: black and white. There should be no gray, or white with an opacity (for example, using border-white/50 is not allowed)
-* Keep a minimal, clean, flat design.
+* use the default shadcn components and dark theme styling. To add a component, use `bun x shadcn-svelte@latest add <component-name>`
