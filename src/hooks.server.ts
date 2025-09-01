@@ -5,7 +5,7 @@ import { ready } from '$lib/server/db';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	await ready;
-	
+
 	const { cookies } = event;
 
 	const payload = auth.verify(cookies.get('token'));

@@ -33,7 +33,6 @@ const db = new loki(path.join(process.cwd(), 'data', 'data.db'), {
 	}
 });
 
-
 export interface ConfigItem<T> {
 	key: string;
 	value: T;

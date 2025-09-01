@@ -19,7 +19,7 @@
 		type,
 		class: className,
 		wrapperClass,
-		iconClass,
+		iconClass
 	}: Props = $props();
 </script>
 

@@ -1,11 +1,16 @@
 import { get } from 'svelte/store';
 
-import { type Renderable, type ToastOptions, toast as _toast } from 'svelte-french-toast';
+import {
+	type Renderable,
+	type ToastOptions,
+	toast as _toast
+} from 'svelte-french-toast';
 
 export namespace toast {
 	namespace themes {
 		export const current = () => ({
-			style: 'border: 2px solid #FFFFFF; color: #FFFFFF; background-color: #000000;',
+			style:
+				'border: 2px solid #FFFFFF; color: #FFFFFF; background-color: #000000;',
 			iconTheme: {
 				primary: '#FFFFFF',
 				secondary: '#000000'
@@ -27,7 +32,10 @@ export namespace toast {
 	export const loading: (
 		message: Renderable,
 		options?: Omit<ToastOptions, 'className'>
-	) => { dismiss: () => void; update: (content: string) => void } = (message, options) => {
+	) => { dismiss: () => void; update: (content: string) => void } = (
+		message,
+		options
+	) => {
 		const randomID = `toast-${Math.random().toString(36).substring(7)}`;
 		const id = _toast.loading(message, {
 			...themes.current(),

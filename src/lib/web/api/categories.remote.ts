@@ -6,10 +6,11 @@ import * as v from 'valibot';
 import { authCheck } from '.';
 
 export const remove = command(v.number(), async (id) => {
-authCheck();	db.categories.remove(id);
+	authCheck();
+	db.categories.remove(id);
 
 	db.secrets.removeWhere((secret) => secret.category === id);
-}); 	
+});
 
 export const create = command(
 	v.object({ name: v.string(), order: v.number() }),

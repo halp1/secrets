@@ -25,7 +25,9 @@
 		class: className = '',
 		containerClass = ''
 	}: Props = $props();
-	let transitionFunction = $derived(transition?.in?.function || (() => () => {}));
+	let transitionFunction = $derived(
+		transition?.in?.function || (() => () => {})
+	);
 
 	let content: HTMLDivElement = $state()!;
 	let resizeKey = $state(0);
