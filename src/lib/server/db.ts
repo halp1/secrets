@@ -20,7 +20,7 @@ loki.LokiFsAdapter = LokiFsAdapter;
 const db = new loki(path.join(process.cwd(), 'data', 'data.db'), {
 	// @ts-expect-error
 	adapter: new LokiFsAdapter(),
-	autoload: false,
+	autoload: true,
 	autosave: true,
 	autoloadCallback: () => {
 		config = db.addCollection('config');
