@@ -1,13 +1,26 @@
 import loki from 'lokijs';
 import path from 'node:path';
+import fs from 'node:fs';
 
 let resolve: () => void;
 export let ready = new Promise<void>((res) => {
 	resolve = res;
 });
 
+function LokiFsAdapter() {
+	// @ts-expect-error
+	this.fs = fs;
+}
+
+LokiFsAdapter.prototype = loki.LokiFsAdapter.prototype;
+LokiFsAdapter.prototype.constructor = LokiFsAdapter;
+// @ts-expect-error
+loki.LokiFsAdapter = LokiFsAdapter;
+
 const db = new loki(path.join(process.cwd(), 'data', 'data.db'), {
-	autoload: true,
+	// @ts-expect-error
+	adapter: new LokiFsAdapter(),
+	autoload: false,
 	autosave: true,
 	autoloadCallback: () => {
 		config = db.addCollection('config');
@@ -19,6 +32,7 @@ const db = new loki(path.join(process.cwd(), 'data', 'data.db'), {
 		resolve();
 	}
 });
+
 
 export interface ConfigItem<T> {
 	key: string;
