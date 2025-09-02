@@ -54,6 +54,8 @@
 		"@dnd-kit-svelte/core": "^0.0.11",
 		"@dnd-kit-svelte/sortable": "^0.0.11",
 		"@dnd-kit-svelte/utilities": "^0.0.11",
+		"@node-rs/argon2": "^2.0.2",
+		"@node-rs/argon2-wasm32-wasi": "^2.0.2",
 		"argon2-browser": "^1.18.0",
 		"canvas": "^3.2.0",
 		"muuri": "^0.9.5"

@@ -2,7 +2,7 @@ import { command, getRequestEvent } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { config } from '../../server/db';
 import * as v from 'valibot';
-import argon2 from 'argon2';
+import argon2 from '@node-rs/argon2/index.js';
 import { JWT_SECRET } from '$env/static/private';
 import crypto from 'node:crypto';
 
@@ -15,7 +15,6 @@ export const setMasterPassword = command(
 			throw error(400, 'Master password is already set');
 
 		const hash = await argon2.hash(password, {
-			type: argon2.argon2id,
 			memoryCost: 65536,
 			timeCost: 3,
 			parallelism: 1
