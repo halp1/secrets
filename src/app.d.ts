@@ -22,3 +22,8 @@ declare global {
 }
 
 export {};
+
+declare module "argon2-wasm-esm" {
+  import * as argon2 from "argon2";
+  export = argon2;
+}

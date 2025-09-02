@@ -2,11 +2,14 @@ import { command, getRequestEvent } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { config } from '../../server/db';
 import * as v from 'valibot';
-import argon2 from 'argon2';
+// @ts-ignore
+import _argon2 from 'argon2-wasm-esm';
 import { JWT_SECRET } from '$env/static/private';
 import crypto from 'node:crypto';
 
 import jwt from 'jsonwebtoken';
+
+const argon2 = _argon2 as typeof import('argon2');
 
 export const setMasterPassword = command(
 	v.tuple([v.string(), v.string()]),
