@@ -35,7 +35,7 @@ export const authenticate = command(v.string(), async (password) => {
 	if (
 		!(await argon2.verify({
 			pass: password,
-			hash: stored.value,
+			encoded: stored.value,
 			type: argon2.argon2id
 		}))
 	)
