@@ -32,7 +32,13 @@ export const setMasterPassword = command(
 export const authenticate = command(v.string(), async (password) => {
 	const stored = config.findOne({ key: 'masterPassword' });
 	if (!stored) throw error(400, 'Master password is not set');
-	if (!(await argon2.verify(stored.value, password)))
+	if (
+		!(await argon2.verify({
+			pass: password,
+			hash: stored.value,
+			type: argon2.argon2id
+		}))
+	)
 		throw error(401, 'Invalid password');
 
 	// set jwt token
