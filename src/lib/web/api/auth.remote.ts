@@ -3,13 +3,11 @@ import { error } from '@sveltejs/kit';
 import { config } from '../../server/db';
 import * as v from 'valibot';
 // @ts-ignore
-import _argon2 from 'argon2-wasm-esm';
+import argon2 from 'argon2-wasm-esm';
 import { JWT_SECRET } from '$env/static/private';
 import crypto from 'node:crypto';
 
 import jwt from 'jsonwebtoken';
-
-const argon2 = _argon2 as typeof import('argon2');
 
 export const setMasterPassword = command(
 	v.tuple([v.string(), v.string()]),
@@ -17,10 +15,12 @@ export const setMasterPassword = command(
 		if (config.findOne({ key: 'masterPassword' }))
 			throw error(400, 'Master password is already set');
 
-		const hash = await argon2.hash(password, {
+		const hash = await argon2.hash({
+			pass: password,
+			salt,
 			type: argon2.argon2id,
-			memoryCost: 65536,
-			timeCost: 3,
+			mem: 65536,
+			time: 3,
 			parallelism: 1
 		});
 
