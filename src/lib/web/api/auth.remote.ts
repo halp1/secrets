@@ -2,8 +2,7 @@ import { command, getRequestEvent } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { config } from '../../server/db';
 import * as v from 'valibot';
-// @ts-ignore
-import argon2 from 'argon2-wasm-esm';
+import argon2 from 'argon2';
 import { JWT_SECRET } from '$env/static/private';
 import crypto from 'node:crypto';
 
@@ -15,12 +14,10 @@ export const setMasterPassword = command(
 		if (config.findOne({ key: 'masterPassword' }))
 			throw error(400, 'Master password is already set');
 
-		const hash = await argon2.hash({
-			pass: password,
-			salt,
+		const hash = await argon2.hash(password, {
 			type: argon2.argon2id,
-			mem: 65536,
-			time: 3,
+			memoryCost: 65536,
+			timeCost: 3,
 			parallelism: 1
 		});
 
@@ -32,13 +29,7 @@ export const setMasterPassword = command(
 export const authenticate = command(v.string(), async (password) => {
 	const stored = config.findOne({ key: 'masterPassword' });
 	if (!stored) throw error(400, 'Master password is not set');
-	if (
-		!(await argon2.verify({
-			pass: password,
-			encoded: stored.value,
-			type: argon2.argon2id
-		}))
-	)
+	if (!(await argon2.verify(stored.value, password)))
 		throw error(401, 'Invalid password');
 
 	// set jwt token

@@ -55,7 +55,6 @@
 		"@dnd-kit-svelte/sortable": "^0.0.11",
 		"@dnd-kit-svelte/utilities": "^0.0.11",
 		"argon2-browser": "^1.18.0",
-		"argon2-wasm-esm": "^1.0.3",
 		"canvas": "^3.2.0",
 		"muuri": "^0.9.5"
 	}
