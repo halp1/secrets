@@ -661,7 +661,7 @@
                                 })}
                               onkeydown={(e) => {
                                 if (e.key === "Escape") {
-                                  item.editing.key = false;
+                                  item.editing.value = false;
                                 } else if (e.key === "Enter") {
                                   e.currentTarget?.value?.length &&
                                     updateItem(item.secret.$loki, {
