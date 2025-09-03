@@ -1,11 +1,11 @@
-import type { Category } from '$lib/server/db';
+import type { Category } from "$lib/server/db";
 
 export interface AppCategory {
-	open: boolean;
-	category: Category;
+  open: boolean;
+  category: Category;
 }
 
 export interface Filter {
-	search: string;
-	category: number;
+  search: string;
+  category: number;
 }

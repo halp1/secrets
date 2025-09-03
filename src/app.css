@@ -1,100 +1,100 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@import 'tw-animate-css';
+@import "tw-animate-css";
 
 @source inline("invisible");
 
 @utility font-anta {
-	font-family: 'Anta', serif;
-	font-weight: 400;
+  font-family: "Anta", serif;
+  font-weight: 400;
 }
 
 @utility font-fira {
-	font-family: 'Fira Code', monospace;
-	font-weight: 400;
+  font-family: "Fira Code", monospace;
+  font-weight: 400;
 }
 
 @theme {
-	--cutoff-xs: 5px;
-	--cutoff-sm: 7.5px;
-	--cutoff-md: 10px;
-	--cutoff-lg: 15px;
-	--cutoff-xl: 20px;
+  --cutoff-xs: 5px;
+  --cutoff-sm: 7.5px;
+  --cutoff-md: 10px;
+  --cutoff-lg: 15px;
+  --cutoff-xl: 20px;
 }
 
 @utility clip-corners-* {
-	--cutoff-amount: --value(--cutoff-*);
+  --cutoff-amount: --value(--cutoff-*);
 
-	clip-path: polygon(
-		var(--cutoff-amount) 0,
-		calc(100% - var(--cutoff-amount)) 0,
-		100% var(--cutoff-amount),
-		100% calc(100% - var(--cutoff-amount)),
-		calc(100% - var(--cutoff-amount)) 100%,
-		var(--cutoff-amount) 100%,
-		0 calc(100% - var(--cutoff-amount)),
-		0 var(--cutoff-amount)
-	);
+  clip-path: polygon(
+    var(--cutoff-amount) 0,
+    calc(100% - var(--cutoff-amount)) 0,
+    100% var(--cutoff-amount),
+    100% calc(100% - var(--cutoff-amount)),
+    calc(100% - var(--cutoff-amount)) 100%,
+    var(--cutoff-amount) 100%,
+    0 calc(100% - var(--cutoff-amount)),
+    0 var(--cutoff-amount)
+  );
 }
 
 @utility clip-arrow-left {
-	--clip-amount: 10px;
-	clip-path: polygon(
-		var(--clip-amount) 0,
-		100% 0,
-		100% 100%,
-		var(--clip-amount) 100%,
-		0 50%
-	);
+  --clip-amount: 10px;
+  clip-path: polygon(
+    var(--clip-amount) 0,
+    100% 0,
+    100% 100%,
+    var(--clip-amount) 100%,
+    0 50%
+  );
 }
 
 @utility clip-arrow-right {
-	--clip-amount: 10px;
-	clip-path: polygon(
-		calc(100% - var(--clip-amount)) 0,
-		0 0,
-		0 100%,
-		calc(100% - var(--clip-amount)) 100%,
-		100% 50%
-	);
+  --clip-amount: 10px;
+  clip-path: polygon(
+    calc(100% - var(--clip-amount)) 0,
+    0 0,
+    0 100%,
+    calc(100% - var(--clip-amount)) 100%,
+    100% 50%
+  );
 }
 
 @utility no-scrollbar {
-	&::-webkit-scrollbar {
-		display: none;
-	}
-	-ms-overflow-style: none;
-	scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @utility shake-rotate {
-	animation: shake-rotate 0.2s ease-in-out;
+  animation: shake-rotate 0.2s ease-in-out;
 }
 
 @keyframes shake-rotate {
-	0% {
-		transform: rotate(0deg);
-	}
-	25% {
-		transform: rotate(5deg);
-	}
-	50% {
-		transform: rotate(0deg);
-	}
-	75% {
-		transform: rotate(-5deg);
-	}
-	100% {
-		transform: rotate(0deg);
-	}
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 @layer base {
-	body {
-		@apply bg-black font-fira text-white;
-	}
+  body {
+    @apply bg-black font-fira text-white;
+  }
 
-	/* *,
+  /* *,
 	::before,
 	::after {
 		transition: all 0.2s ease;
