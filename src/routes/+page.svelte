@@ -34,6 +34,7 @@
     Copy,
     Eye,
     Funnel,
+    Pencil,
     Plus,
     Trash
   } from "@lucide/svelte";
@@ -692,6 +693,25 @@
                         </div>
                         <div class="flex items-center">
                           <button
+                            class="group -ml-3 cursor-pointer border-white bg-white pl-0.5 clip-arrow-left"
+                            onclick={async (e) => {
+                              item.editing.value = true;
+                              const parent =
+                                e.currentTarget.parentElement?.parentElement;
+                              await tick();
+                              parent?.querySelector("input")?.focus();
+                              parent?.querySelector("input")?.select();
+                            }}
+                          >
+                            <div
+                              class="flex h-11 items-center justify-center bg-black pr-5 pl-4 clip-arrow-left group-hover:bg-black/90"
+                              class:bg-white={item.visible}
+                              class:text-black={item.visible}
+                              class:hover:bg-gray-200={item.visible}
+                            >
+                              <Pencil />
+                            </div>
+                          </button><button
                             class="group -ml-3 cursor-pointer border-white bg-white pl-0.5 clip-arrow-left"
                             onclick={() => (item.visible = !item.visible)}
                           >
