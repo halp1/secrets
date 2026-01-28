@@ -243,6 +243,11 @@
         addCategoryInput?.blur();
         editingCategory = null;
       }
+
+      if (event.key === "/" && document.activeElement !== addCategoryInput) {
+        event.preventDefault();
+        addCategoryInput?.focus();
+      }
     };
 
     window.addEventListener("keydown", keyHandler);
@@ -438,7 +443,9 @@
       class="no-scrollbar flex max-h-[calc(100vh-215px)] flex-1 flex-col gap-10 overflow-y-auto py-5"
     >
       {#each categories as cat, idx}
-        {#if filter.category === -1 || filter.category === cat.category.$loki}
+        {#if (filter.category === -1 || filter.category === cat.category.$loki) && (filter.search.trim().length === 0 || items.some((item) => item.secret.category === cat.category.$loki && item.secret.name
+                  .toLowerCase()
+                  .includes(filter.search.toLowerCase().trim())))}
           <div
             class="border-4 bg-white clip-corners-lg"
             in:fly|global={{

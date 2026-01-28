@@ -24,16 +24,21 @@
 
 @utility clip-corners-* {
   --cutoff-amount: --value(--cutoff-*);
+  --inner-cutoff-amount: calc(var(--cutoff-amount));
+
+  & * {
+    --inner-cutoff-amount: calc(var(--cutoff-amount) + 1px);
+  }
 
   clip-path: polygon(
-    var(--cutoff-amount) 0,
-    calc(100% - var(--cutoff-amount)) 0,
-    100% var(--cutoff-amount),
-    100% calc(100% - var(--cutoff-amount)),
-    calc(100% - var(--cutoff-amount)) 100%,
-    var(--cutoff-amount) 100%,
-    0 calc(100% - var(--cutoff-amount)),
-    0 var(--cutoff-amount)
+    var(--inner-cutoff-amount, var(--cutoff-amount)) 0,
+    calc(100% - var(--inner-cutoff-amount, var(--cutoff-amount))) 0,
+    100% var(--inner-cutoff-amount, var(--cutoff-amount)),
+    100% calc(100% - var(--inner-cutoff-amount, var(--cutoff-amount))),
+    calc(100% - var(--inner-cutoff-amount, var(--cutoff-amount))) 100%,
+    var(--inner-cutoff-amount, var(--cutoff-amount)) 100%,
+    0 calc(100% - var(--inner-cutoff-amount, var(--cutoff-amount))),
+    0 var(--inner-cutoff-amount, var(--cutoff-amount))
   );
 }
 
