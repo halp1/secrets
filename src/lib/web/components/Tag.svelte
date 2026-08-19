@@ -33,6 +33,8 @@
       zIndex: isDragging.current ? 1 : undefined
     })
   );
+
+  const selected = $derived(filter.category === category.category.$loki);
 </script>
 
 <div
@@ -54,41 +56,22 @@
       }
     }}
     class={[
-      "group cursor-pointer border-2 border-white bg-white clip-corners-xs",
+      "flex cursor-pointer items-center gap-1.5 border px-2 py-1 font-mono text-xs tracking-[0.08em] uppercase transition-colors",
+      selected
+        ? "border-accent bg-accent text-bg"
+        : "border-border bg-transparent text-muted hover:border-accent hover:text-accent",
       { hidden: isDragging.current }
     ]}
   >
-    <div
-      class="flex items-center gap-2 px-2 py-1 clip-corners-xs"
-      class:group-hover:bg-gray-900={filter.category !==
-        category.category.$loki}
-      class:bg-black={filter.category !== category.category.$loki}
-      class:bg-white={filter.category === category.category.$loki}
-      class:text-black={filter.category === category.category.$loki}
-      class:group-hover:bg-gray-200={filter.category ===
-        category.category.$loki}
-    >
-      <Tag />
-      <span>{category.category.name}</span>
-    </div>
+    <Tag size={12} />
+    <span>{category.category.name}</span>
   </button>
   {#if isDragging.current}
     <button
-      class="group cursor-pointer border-2 border-white bg-white opacity-45 clip-corners-xs"
+      class="flex cursor-pointer items-center gap-1.5 border border-border bg-transparent px-2 py-1 font-mono text-xs tracking-[0.08em] text-muted uppercase opacity-45"
     >
-      <div
-        class="flex items-center gap-2 px-2 py-1 clip-corners-xs"
-        class:group-hover:bg-gray-900={filter.category !==
-          category.category.$loki}
-        class:bg-black={filter.category !== category.category.$loki}
-        class:bg-white={filter.category === category.category.$loki}
-        class:text-black={filter.category === category.category.$loki}
-        class:group-hover:bg-gray-200={filter.category ===
-          category.category.$loki}
-      >
-        <Tag />
-        <span class="whitespace-nowrap">{category.category.name}</span>
-      </div>
+      <Tag size={12} />
+      <span class="whitespace-nowrap">{category.category.name}</span>
     </button>
   {/if}
 </div>

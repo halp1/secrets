@@ -6,5 +6,7 @@ export * as categories from "./categories.remote";
 export * as secrets from "./secrets.remote";
 
 export const authCheck = () => {
-  if (!getRequestEvent().locals.authenticated) throw error(401, "Unauthorized");
+  const user = getRequestEvent().locals.user;
+  if (!user) throw error(401, "Unauthorized");
+  return user;
 };

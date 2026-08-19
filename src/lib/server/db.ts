@@ -17,6 +17,8 @@ LokiFsAdapter.prototype.constructor = LokiFsAdapter;
 // @ts-expect-error
 loki.LokiFsAdapter = LokiFsAdapter;
 
+fs.mkdirSync(path.join(process.cwd(), "data"), { recursive: true });
+
 const db = new loki(path.join(process.cwd(), "data", "data.db"), {
   // @ts-expect-error
   adapter: new LokiFsAdapter(),
@@ -25,9 +27,6 @@ const db = new loki(path.join(process.cwd(), "data", "data.db"), {
   autoloadCallback: () => {
     config = db.addCollection("config");
     categories = db.addCollection("categories");
-    if (!categories.findOne({ name: "Other" })) {
-      categories.insert({ name: "Other", order: 0 });
-    }
     secrets = db.addCollection("secrets");
     resolve();
   }
@@ -44,6 +43,7 @@ export interface Category {
   $loki: number;
   name: string;
   order: number;
+  userId: string;
 }
 
 export let categories: Collection<Omit<Category, "$loki">>;
@@ -53,6 +53,15 @@ export interface Secret {
   name: string;
   value: string;
   category: number;
+  userId: string;
 }
 
 export let secrets: Collection<Omit<Secret, "$loki">>;
+
+export const vaultNeedsMigration = () => !!config.findOne({ key: "masterPassword" });
+
+export const ensureUserCategories = (userId: string) => {
+  if (!categories.findOne({ userId })) {
+    categories.insert({ name: "Other", order: 0, userId });
+  }
+};

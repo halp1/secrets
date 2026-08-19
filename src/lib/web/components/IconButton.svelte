@@ -9,39 +9,27 @@
     icon: Component<IconProps, {}, "">;
     type?: HTMLButtonElement["type"];
     class?: string;
-    wrapperClass?: string;
     iconClass?: string;
+    danger?: boolean;
   }
 
   const {
     onclick,
     icon: Icon,
-    type,
+    type = "button",
     class: className,
-    wrapperClass,
-    iconClass
+    iconClass,
+    danger = false
   }: Props = $props();
 </script>
 
 <button
   class={twMerge(
-    "group cursor-pointer border-[3px] border-white bg-white clip-corners-lg",
+    "flex h-8 w-8 cursor-pointer items-center justify-center border-none bg-transparent text-muted transition-colors hover:bg-white/4 hover:text-accent",
+    danger && "hover:text-[#ff6b6b]",
     className
   )}
-  style="--cutoff-amount: 17px !important;"
   {...{ onclick, type }}
 >
-  <div
-    class={twMerge(
-      "relative h-8 w-8 bg-black clip-corners-lg group-hover:bg-gray-900",
-      wrapperClass
-    )}
-  >
-    <Icon
-      class={twMerge(
-        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
-        iconClass
-      )}
-    />
-  </div>
+  <Icon size={16} class={iconClass} />
 </button>

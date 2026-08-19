@@ -1,59 +1,52 @@
-import { command, getRequestEvent } from "$app/server";
+import { command } from "$app/server";
 import { error } from "@sveltejs/kit";
-import { config } from "../../server/db";
+import { config, secrets, categories } from "../../server/db";
 import * as v from "valibot";
 import argon2 from "@node-rs/argon2/index.js";
-import { JWT_SECRET } from "$env/static/private";
-import crypto from "node:crypto";
+import { authCheck } from ".";
+import { encrypt } from "$lib/server/crypto";
 
-import jwt from "jsonwebtoken";
+export const migrateVault = command(
+  v.object({
+    password: v.string(),
+    secrets: v.array(
+      v.object({
+        id: v.number(),
+        name: v.string(),
+        value: v.string()
+      })
+    )
+  }),
+  async ({ password, secrets: decrypted }) => {
+    const user = authCheck();
+    const stored = config.findOne({ key: "masterPassword" });
+    if (!stored) throw error(400, "Nothing to migrate");
+    if (!(await argon2.verify(stored.value, password))) {
+      throw error(401, "Invalid password");
+    }
 
-export const setMasterPassword = command(
-  v.tuple([v.string(), v.string()]),
-  async ([password, salt]) => {
-    if (config.findOne({ key: "masterPassword" }))
-      throw error(400, "Master password is already set");
+    const existing = secrets.find();
+    if (existing.length !== decrypted.length) {
+      throw error(400, "Secret count mismatch");
+    }
 
-    const hash = await argon2.hash(password, {
-      memoryCost: 65536,
-      timeCost: 3,
-      parallelism: 1
-    });
+    const byId = new Map(decrypted.map((item) => [item.id, item]));
+    for (const doc of existing) {
+      const plain = byId.get(doc.$loki);
+      if (!plain) throw error(400, "Missing decrypted secret");
+      doc.name = encrypt(plain.name);
+      doc.value = encrypt(plain.value);
+      doc.userId = user.sub;
+      secrets.update(doc);
+    }
 
-    config.insert({ key: "masterPassword", value: hash });
-    config.insert({ key: "salt", value: salt });
+    for (const category of categories.find()) {
+      category.userId = user.sub;
+      categories.update(category);
+    }
+
+    config.remove(stored);
+    const salt = config.findOne({ key: "salt" });
+    if (salt) config.remove(salt);
   }
 );
-
-export const authenticate = command(v.string(), async (password) => {
-  const stored = config.findOne({ key: "masterPassword" });
-  if (!stored) throw error(400, "Master password is not set");
-  if (!(await argon2.verify(stored.value, password)))
-    throw error(401, "Invalid password");
-
-  // set jwt token
-  const { cookies } = getRequestEvent();
-
-  const tokenBody = {
-    sub: 0,
-    key: crypto.createHash("sha256").update(password).digest("hex"),
-    iat: Date.now()
-  };
-
-  const token = jwt.sign(tokenBody, JWT_SECRET, { expiresIn: "1h" });
-
-  cookies.set("token", token, {
-    httpOnly: true,
-    path: "/",
-    maxAge: 60 * 60
-  });
-});
-
-export const logout = command(async () => {
-  const { cookies } = getRequestEvent();
-  cookies.delete("token", {
-    httpOnly: true,
-    path: "/",
-    maxAge: 0
-  });
-});

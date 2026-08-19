@@ -1,23 +1,18 @@
-// See https://svelte.dev/docs/kit/types#app.d.ts
-
+import type { SessionUser } from "$lib/session";
 import type { Category, Secret } from "$lib/server/db";
 
-// for information about these interfaces
 declare global {
   namespace App {
-    // interface Error {}
     interface Locals {
-      authenticated: boolean;
+      user: SessionUser | null;
     }
     interface PageData {
-      authenticated: boolean;
+      user: SessionUser | null;
       salt?: string;
       categories?: Category[];
       items?: Secret[];
-      categoryWidth?: number;
+      secrets?: Pick<Secret, "$loki" | "name" | "value">[];
     }
-    // interface PageState {}
-    // interface Platform {}
   }
 }
 
